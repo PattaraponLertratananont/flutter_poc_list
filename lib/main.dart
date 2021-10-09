@@ -24,13 +24,19 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     controller.getFeeds(1);
     scrollController.addListener(() {
-      bool isEdgaBottom = scrollController.position.atEdge &&
+      // solution 1
+      bool isEdgaBottom1 = scrollController.offset >=
+              scrollController.position.maxScrollExtent &&
+          !scrollController.position.outOfRange;
+      // solution 2
+      bool isEdgaBottom2 = scrollController.position.atEdge &&
           scrollController.position.pixels != 0;
 
       double pixelAddingLoadmore = scrollController.position.pixels +
           heightOfLoadMore +
           (marginVerticalOfLoadMore * 2);
-      if (isEdgaBottom) {
+      if (isEdgaBottom1) {
+        print("BOTTOM");
         controller.isLoadMore.value = true;
         scrollController.jumpTo(pixelAddingLoadmore);
         controller.getFeeds(50);
